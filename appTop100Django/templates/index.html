@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block javascript %}
+    {% load static %}
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/effects.js' %}"></script>
+    <script src="{% static 'js/jquery.qtip-1.0.0-rc3.min.js' %}"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
+{% endblock %}
+
+{% block titulo %}{% trans "Top 100 Canciones" %}{% endblock %}
+
+{% block contenido %}
+<h2>{% trans "Bienvenidos a nuestro Top 100 de Música" %}</h2>
+
+<!-- Carrusel de bienvenida en la página de inicio (index) -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for estilo, cancion in top_canciones_por_estilo %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ cancion.imagen.url }}" class="topcanciones-img" alt="{{ cancion.titulo }}">
+            <div class="carousel-caption d-md-block">
+                <h5>{{ estilo.nombre }}: {{ cancion.titulo }}</h5>
+                <p>{% for interprete in cancion.intepretes.all %}{{ interprete.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<!-- Aquí continúa el contenido de la página de inicio -->
+<p>{% trans "Explora las mejores canciones por estilo, los intérpretes más populares y mucho más." %}</p>
+
+<!-- Las mejores canciones por estilo -->
+<section class="topcanciones">
+{% for estilo, cancion in top_canciones_por_estilo %}
+    <h3>{% trans "Mejor canción de" %} {{ estilo.nombre }}</h3> 
+    <ul>
+        <li>
+            <a href="{% url 'detalles_cancion' cancion.id %}">{{ cancion.titulo }}</a> 
+            - {{ cancion.interprete.nombre }} ({% trans 'Ranking' %}: {{ cancion.ranking }})
+        </li>
+    </ul>
+{% endfor %}
+</section>
+
+{% endblock %}

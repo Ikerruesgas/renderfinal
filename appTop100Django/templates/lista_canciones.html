@@ -1,0 +1,35 @@
+{% extends 'base_listas.html' %}
+{% load i18n %}
+
+<!-- Para mostrar la lista de canciones-->
+
+{% load static %}
+
+{% block titulo %}{% trans "Lista de Canciones" %}{% endblock %}
+
+{% block banner %}
+<div class="banner-content">
+    <img src="{% static 'images/canciones_banner.jpg' %}" alt="{% trans 'Banner de Canciones' %}" class="banner-image">
+    <div class="banner-overlay">
+        <h2>{% trans "Encuentra tus Canciones Favoritas" %}</h2>
+        <p>{% trans "Explora las mejores Canciones de cualquier género" %}</p>
+        <a href="https://www.youtube.com/watch?v=9Jlb28cIrDk" class="button" target="_blank">{% trans "Descubre más" %}</a>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Cada canción la mostramos a través de un bucle-->
+
+{% block contenido_principal %}
+    <h2>{% trans "Lista de Canciones" %}</h2>
+    <ul>
+        {% for cancion in canciones %}
+            <li>
+                <a href="{% url 'detalles_cancion' cancion.id %}">
+                    {{ cancion.titulo }}
+                </a> - {{ cancion.interprete.nombre }} 
+                ({% trans "Ranking Global" %}: {{ cancion.ranking }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

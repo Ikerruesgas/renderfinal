@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+<!-- Para mostrar los detalles de una Canción-->
+
+{% load i18n %} <!-- Cargar soporte para traducciones -->
+{% block titulo %}{% trans "Detalles de Canción" %}{% endblock %}
+
+{% block contenido %}
+<h2 class="cancion-title">{{ cancion.titulo }}</h2>
+
+<!-- De cada imagen mostraremos el título así como el intérprete-->
+{% if cancion.imagen %}
+    <img src="{{ cancion.imagen.url }}" class="detalle-cancion" alt="{% trans 'Imagen de' %} {{ cancion.titulo }}">
+{% else %}
+    <p>{% trans 'No hay imagen disponible para esta canción.' %}</p>
+{% endif %}
+
+<!-- Mostramos los detalles de la canción-->
+<br>
+<br><p><strong>{% trans 'Interprete(s):' %}</strong>
+    {% for interprete in cancion.intepretes.all %}
+    <a href="{% url 'detalles_interprete' interprete.id %}">{{ interprete.nombre }}</a>{% if not forloop.last %}, {% endif %}    {% endfor %}
+</p>
+<p><strong>{% trans 'Ranking:' %}</strong> {{ cancion.ranking }}</p>
+<p><strong>{% trans 'Estilo:' %}</strong>
+    <a href="{% url 'detalles_estilo' cancion.estilo.id %}">{{ cancion.estilo.nombre }}</a>
+</p>
+<p><strong>{% trans 'Descripción:' %}</strong> {{ cancion.descripcion }}</p>
+
+<a href="{% url 'lista_canciones' %}">{% trans 'Volver a la lista de canciones' %}</a>
+{% endblock %}

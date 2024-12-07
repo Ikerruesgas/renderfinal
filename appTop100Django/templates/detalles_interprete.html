@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+<!-- Para mostrar los detalles de un Intérprete-->
+
+{% load i18n %} <!-- Cargar soporte para traducciones -->
+
+
+{% block titulo %}{% trans "Detalles de Intérprete" %}{% endblock %}
+
+{% block contenido %}
+<h2>{% trans "Intérprete:" %} {{ interprete.nombre }}</h2>
+
+{% if interprete.imagen %}
+    <img src="{{ interprete.imagen.url }}" class="detalle-interprete" alt="{{ interprete.nombre }}" >
+{% else %}
+    <p>{% trans "No hay imagen disponible para este intérprete." %}</p>
+{% endif %}
+<br>
+<br><h3>{% trans "Canciones" %}</h3>
+<!-- Para mostrar las canciones de este intérprete-->
+
+<ul>
+    {% for cancion in interprete.cancion_set.all %} 
+        <li>
+            <a href="{% url 'detalles_cancion' cancion.id %}">{{ cancion.titulo }}</a> 
+            ({% trans "Ranking:" %} {{ cancion.ranking }})
+        </li>
+    {% empty %}
+        <li>{% trans "No hay canciones disponibles para este intérprete." %}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'lista_interpretes' %}">{% trans "Volver a la lista de intérpretes" %}</a>
+{% endblock %}
