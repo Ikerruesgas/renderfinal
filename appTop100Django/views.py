@@ -8,7 +8,7 @@ from django_ratelimit.decorators import ratelimit
 
 # Página principal
 def index(request):
-    estilos = get_list_or_404(Estilo.objects.all()) # Obtiene todos los estilos
+    estilos = Estilo.objects.all()  # Obtiene todos los estilos
     top_canciones_por_estilo = []  
     for estilo in estilos:
         # Obtiene la mejor canción del estilo según el ranking
