@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8#81hnr!8_0)!(0ub(dvyyou6#y)x*ztkzb6$@@6479fqf-v@q'
+SECRET_KEY = '61c7c0585075a939c2025f9067c1fec1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['renderfinal.onrender.com', 'localhost']
 
 
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Añadido para WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',  # Añadido para traducción
     'django.middleware.common.CommonMiddleware',
@@ -79,13 +80,9 @@ WSGI_APPLICATION = 'proyectoTop100.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default='postgresql://final_19z7_user:JY3wrjjWUCc4ZSMdmNu5MQrUvqODo4z3@dpg-cta6mjt6l47c73bit0v0-a/final_19z7')
 }
 
-DATABASES['default'] = dj_database_url.parse('postgresql://final_19z7_user:JY3wrjjWUCc4ZSMdmNu5MQrUvqODo4z3@dpg-cta6mjt6l47c73bit0v0-a.frankfurt-postgres.render.com/final_19z7')
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -132,6 +129,10 @@ LOCALE_PATHS = [
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'appTop100Django', 'static')]
+
+# WhiteNoise Static File Settings
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Donde se recopilan los archivos estáticos
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Compresión y almacenamiento eficiente
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
